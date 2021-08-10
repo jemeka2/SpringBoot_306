@@ -67,6 +67,54 @@ public class Controller {
         return "index";
     }
 
+    @GetMapping("/add")
+    public String addDirector(Model model){
+        model.addAttribute("director", new Director());
+        return "directorform";
+    }
+
+    @RequestMapping("/updateDirector/{id}")
+    public String updateDirector(@PathVariable("id") long id, Model model){
+        model.addAttribute("director", directorRepo.findById(id).get());
+        return "directorform";
+    }
+
+    @RequestMapping("/delete/{id}")
+    public String delete(@PathVariable("id") long id){
+        directorRepo.deleteById(id);
+        return "redirect:/";
+    }
+    @PostMapping("/processDirector")
+    public String processDirector(@ModelAttribute Director director){
+        directorRepo.save(director);
+        return "redirect:/";
+    }
+
+    @GetMapping("/addMovie")
+    public String addMovie(Model model){
+        model.addAttribute("movie", new Movie());
+        model.addAttribute("directors", directorRepo.findAll());
+        return "movieForm";
+    }
+
+    @RequestMapping("/updateMovie/{id}")
+    public String updateMovie(@PathVariable("id") long id, Model model){
+        model.addAttribute("directors", directorRepo.findAll());
+        model.addAttribute("movie", movieRepo.findById(id).get());
+        return "movieForm";
+    }
+    @RequestMapping("/deleteMovie/{id}")
+    public String deleteMovie(@PathVariable("id") long id){
+        movieRepo.deleteById(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/processMovie")
+    public String processMovie(@ModelAttribute Movie movie){
+        movieRepo.save(movie);
+        return "redirect:/";
+    }
+
 
 
 
