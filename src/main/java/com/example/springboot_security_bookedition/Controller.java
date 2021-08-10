@@ -10,7 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @org.springframework.stereotype.Controller
 public class Controller {
@@ -19,6 +21,12 @@ public class Controller {
 
     @Autowired
     RoleRepo roleRepo;
+
+    @Autowired
+    DirectorRepo directorRepo;
+
+    @Autowired
+    MovieRepo movieRepo;
 
     @Autowired
     CloudinaryConfig cloudc;
@@ -53,10 +61,26 @@ public class Controller {
         return "index";
     }
     @RequestMapping("/")
-    public String listActors(){
+    public String index(Model model){
+
+        model.addAttribute("directors", directorRepo.findAll());
         return "index";
     }
 
+
+
+
+    @RequestMapping("/login")
+    public String login(){return "login";}
+
+    @RequestMapping("/admin")
+    public String admin(){return "admin";}
+
+    @RequestMapping("/logout")
+    public String logout(){
+        return "redirect:/login?logout=true";
+    }
+}
 
 //    @PostMapping("/add")
 //    public String processActor(@ModelAttribute Actor actor,
@@ -74,15 +98,3 @@ public class Controller {
 //        }
 //        return "redirect:/";
 //    }
-
-    @RequestMapping("/login")
-    public String login(){return "login";}
-
-    @RequestMapping("/admin")
-    public String admin(){return "admin";}
-
-    @RequestMapping("/logout")
-    public String logout(){
-        return "redirect:/login?logout=true";
-    }
-}

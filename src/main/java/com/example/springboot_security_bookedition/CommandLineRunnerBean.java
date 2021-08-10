@@ -4,8 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Component
 public class CommandLineRunnerBean implements CommandLineRunner {
+
+    @Autowired
+    DirectorRepo directorRepo;
+
+    @Autowired
+    MovieRepo movieRepo;
 
     @Autowired
     UserRepo userRepo;
@@ -26,6 +35,34 @@ public class CommandLineRunnerBean implements CommandLineRunner {
         userRepo.save(admin);
         roleRepo.save(adminRole1);
         roleRepo.save(adminRole2);
+
+        Director director = new Director();
+
+        director.setName("Rodney Rothman");
+        director.setGenre("Action");
+
+        //Create first movie
+        Movie movie = new Movie();
+        movie.setTitle("Into the Spider-Verse");
+        movie.setYear(2018);
+        movie.setDescription("Black Spiderman");
+        movie.setDirector(director);
+
+        //Lets create another movie
+        Movie movie2 = new Movie();
+        movie2.setTitle("22 Jump Street");
+        movie2.setYear(2014);
+        movie2.setDescription("Detectives go to high school");
+        movie2.setDirector(director);
+
+        Set<Movie> movies = new HashSet<>();
+        movies.add(movie);
+        movies.add(movie2);
+
+        director.setMovies(movies);
+
+        directorRepo.save(director);
+
     }
 
 }
